@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Syftr | Side by Side Sorting of Text</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="manifest" href="site.webmanifest">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+  </head>
+  
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CJR7KVFVQM"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-F70H7CX161');
+</script>
+  
+  <body  id="body">
+
+
+<style>
+#cent {
+  text-align: center;
+}
+
+body {
+    
+
+ padding: 0px;
+ margin: 0px;
+    font-family: 'Roboto', sans-serif;
+  color: rgb(24, 61, 94);
+font-size: 16px;
+}
+
+
+  .split-screen {
+    display: flex;
+    width: 100%;
+   
+    overflow-y: scroll;
+    overflow-x: hidden;
+   
+   
+  }
+
+  .split-screen > div {
+    width: 50%;
+  text-align: left;
+    margin: 20px;
+    border-radius: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border: 1px solid rgb(205, 204, 204);
+    background-color: #ecf5fd;
+  }
+
+
+  #H1 {
+
+    color: rgb(243, 247, 249);
+  }
+
+  a {
+  color: white;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline; /* Optional: Add underline on hover if desired */
+}
+
+a:visited {
+  color: white;
+}
+
+#gradient
+{
+  width: 100%;
+  min-height: 100vh;
+  padding: 0px;
+  margin: 0px; 
+
+}
+
+
+</style>
+
+
+<div  id="gradient">
+
+<div id="cent">
+  
+<div class="split-screen" align="center">
+  <div contenteditable="true" id="divit1">
+ 
+  </div>
+  <div contenteditable="true" id="divit2">
+ 
+  </div>
+</div><br /><br /><br /><br /><img src="syftr.png" width="128px" alt="Syftr | Side by Side Sorting of Text"><br />
+<h1 id="H1"><i>Syftr</i> - SIDE BY SIDE SORTING OF TEXT</h1><br /><br /><a href="https://rickybrowne.com" id="link">RICKYBROWNE.COM</a>
+</div>
+</div>
+
+<script>
+
+	
+    
+
+
+
+// save the text inside the div to localStorage when the content changes
+divit1.addEventListener("input", function() {
+  localStorage.setItem("divContent1", divit1.innerHTML);
+});
+
+// load the saved text from localStorage into the div when the page is loaded
+window.addEventListener("load", function() {
+  var savedContent = localStorage.getItem("divContent1");
+  if (savedContent) {
+    divit1.innerHTML = savedContent;
+  }
+});
+
+
+// save the text inside the div to localStorage when the content changes
+divit2.addEventListener("input", function() {
+  localStorage.setItem("divContent2", divit2.innerHTML);
+});
+
+// load the saved text from localStorage into the div when the page is loaded
+window.addEventListener("load", function() {
+  var savedContent = localStorage.getItem("divContent2");
+  if (savedContent) {
+    divit2.innerHTML = savedContent;
+  }
+});
+
+
+
+
+var colors = new Array(
+  [62,35,255],
+  [60,255,60],
+  [255,35,98],
+  [45,175,230],
+  [255,0,255],
+  [255,128,0]);
+
+var step = 0;
+//color table indices for: 
+// current color left
+// next color left
+// current color right
+// next color right
+var colorIndices = [0,1,2,3];
+
+//transition speed
+var gradientSpeed = 0.002;
+
+function updateGradient()
+{
+  
+  if ( $===undefined ) return;
+  
+var c0_0 = colors[colorIndices[0]];
+var c0_1 = colors[colorIndices[1]];
+var c1_0 = colors[colorIndices[2]];
+var c1_1 = colors[colorIndices[3]];
+
+var istep = 1 - step;
+var r1 = Math.round(istep * c0_0[0] + step * c0_1[0]);
+var g1 = Math.round(istep * c0_0[1] + step * c0_1[1]);
+var b1 = Math.round(istep * c0_0[2] + step * c0_1[2]);
+var color1 = "rgb("+r1+","+g1+","+b1+")";
+
+var r2 = Math.round(istep * c1_0[0] + step * c1_1[0]);
+var g2 = Math.round(istep * c1_0[1] + step * c1_1[1]);
+var b2 = Math.round(istep * c1_0[2] + step * c1_1[2]);
+var color2 = "rgb("+r2+","+g2+","+b2+")";
+
+ $('#gradient').css({
+   background: "-webkit-gradient(linear, left top, right top, from("+color1+"), to("+color2+"))"}).css({
+    background: "-moz-linear-gradient(left, "+color1+" 0%, "+color2+" 100%)"});
+  
+  step += gradientSpeed;
+  if ( step >= 1 )
+  {
+    step %= 1;
+    colorIndices[0] = colorIndices[1];
+    colorIndices[2] = colorIndices[3];
+    
+    //pick two new target color indices
+    //do not pick the same as the current one
+    colorIndices[1] = ( colorIndices[1] + Math.floor( 1 + Math.random() * (colors.length - 1))) % colors.length;
+    colorIndices[3] = ( colorIndices[3] + Math.floor( 1 + Math.random() * (colors.length - 1))) % colors.length;
+    
+  }
+}
+
+setInterval(updateGradient,10);
+</script>
+
+  </body>
+</html>
